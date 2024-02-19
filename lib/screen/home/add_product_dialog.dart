@@ -1,0 +1,140 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:restaurant_demo_app/constant/app_button.dart';
+import 'package:restaurant_demo_app/constant/app_color.dart';
+import 'package:restaurant_demo_app/constant/app_text_field.dart';
+import 'package:restaurant_demo_app/controller/home_controller.dart';
+
+showAlertDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10)),
+    contentPadding: EdgeInsets.symmetric(horizontal: 17,vertical: 10),
+    content: GetBuilder(
+      init: Get.find<HomeController>(),
+      builder: (controller) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          size.heightSpace(15),
+          Text("Images",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+          SizedBox(
+            height: size.height(150),
+            width: size.height(300),
+            child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Stack(
+                    children: [
+                      Image.asset("assets/images/ic_chicken.png"),
+                      Positioned(
+                        bottom: 15,
+                        right: 10,
+                        child: GestureDetector(
+                          onTap: () {
+
+                          },
+                          child: Container(
+                            padding:EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: AppColor.whiteColor,
+                                borderRadius: BorderRadius.circular(100),
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(0, 4),
+                                      blurRadius: 4,
+                                      color: Color(0xFF00000040)
+                                  )
+                                ]
+                            ),
+                            child: Icon(Icons.delete_outline,color: AppColor.blackColor,),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }, separatorBuilder: (context, index) {
+              return size.widthSpace(22);
+            }, itemCount: 10),
+          ),
+          size.heightSpace(16),
+          AppButton(buttonText: "Select Images", onPressed: () {
+          },),
+          size.heightSpace(16),
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                    height: size.height(40),
+                    child: AppTextField(controller: controller.nameController,hintText: "Name of the Product",)),
+              ),
+              size.widthSpace(12),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppColor.blackColor
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    iconEnabledColor: AppColor.whiteColor,
+                    iconDisabledColor: AppColor.whiteColor,
+                    style: TextStyle(color: AppColor.whiteColor,fontSize: 15,fontWeight: FontWeight.w400),
+                    items: controller.dropDownItems.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 21,vertical: 5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppColor.blackColor
+                            ),
+                            child: Text(items)),
+                      );
+                    }).toList(),
+                    icon: Icon(Icons.keyboard_arrow_down_rounded,color: AppColor.whiteColor,),
+                    padding: EdgeInsets.only(right: 10,),
+                    value: controller.selectedValue,
+                    onChanged: (String? value) {
+                      controller.selectedValue = value ?? "";
+                      controller.update();
+                    }
+                  ),
+                ),
+              )
+            ],
+          ),
+          size.heightSpace(11),
+          SizedBox(
+              height: size.height(115),
+              child: AppTextField(controller: controller.descriptionController,hintText: "Description",maxLine: 5,)),
+          size.heightSpace(11),
+          SizedBox(
+              height: size.height(45),
+              child: AppTextField(controller: controller.priceController,hintText: "Price",)),
+          size.heightSpace(11),
+          AppButton(buttonText: "Add Option", onPressed: () {
+          },),
+          size.heightSpace(30),
+        ],
+      );
+    },),
+    actions: [
+      TextButton(onPressed: () {
+        Get.back();
+      }, child: Text("Cancel",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: AppColor.blackColor),)),
+      TextButton(onPressed: () {
+
+      }, child: Text("Save",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: AppColor.blackColor),)),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}

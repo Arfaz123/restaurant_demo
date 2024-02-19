@@ -13,6 +13,7 @@ dependencies:
 
 
   get: ^4.6.6
+  dynamicutils: ^1.0.1
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
