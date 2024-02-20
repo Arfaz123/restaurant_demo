@@ -12,4 +12,7 @@ class HomeController extends GetxController{
   ];
 
   String selectedValue = "Sandwish";
+
+  bool cartValue = false;
+  bool drinkValue = false;
 }

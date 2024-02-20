@@ -4,8 +4,9 @@ import 'package:restaurant_demo_app/constant/app_button.dart';
 import 'package:restaurant_demo_app/constant/app_color.dart';
 import 'package:restaurant_demo_app/constant/app_text_field.dart';
 import 'package:restaurant_demo_app/controller/home_controller.dart';
+import 'package:restaurant_demo_app/screen/home/widget/show_option_dialog.dart';
 
-showAlertDialog(BuildContext context) {
+showAddProductDialog(BuildContext context) {
   AlertDialog alert = AlertDialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10)),
@@ -115,6 +116,8 @@ showAlertDialog(BuildContext context) {
               child: AppTextField(controller: controller.priceController,hintText: "Price",)),
           size.heightSpace(11),
           AppButton(buttonText: "Add Option", onPressed: () {
+            Get.back();
+            showOptionDialog(context);
           },),
           size.heightSpace(30),
         ],
