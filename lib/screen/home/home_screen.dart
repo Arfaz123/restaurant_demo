@@ -4,7 +4,10 @@ import 'package:restaurant_demo_app/constant/app_color.dart';
 import 'package:restaurant_demo_app/controller/home_controller.dart';
 import 'package:restaurant_demo_app/screen/home/add_product_dialog.dart';
 import 'package:restaurant_demo_app/screen/home/order_successfull_dialog.dart';
+import 'package:restaurant_demo_app/screen/home/widget/cart_dialog.dart';
+import 'package:restaurant_demo_app/screen/home/widget/cart_view_dialog.dart';
 import 'package:restaurant_demo_app/screen/home/widget/home_screen_widget.dart';
+import 'package:restaurant_demo_app/screen/home/widget/show_option_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -41,7 +44,36 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                size.heightSpace(31),
+                size.heightSpace(35),
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: GestureDetector(
+                    onTap: () {
+                      showCartViewDialog(context);
+                    },
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                        width: size.width(100),
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: AppColor.blackColor
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.shopping_cart,color: AppColor.whiteColor,size: 20,),
+                            size.widthSpace(13),
+                            Text("Cart",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: AppColor.whiteColor),),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                size.heightSpace(22),
                 const Text("Salads",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                 size.heightSpace(11),
                 SizedBox(
@@ -91,8 +123,7 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: AppColor.blackColor,
           child: Icon(Icons.add,color: AppColor.whiteColor,size: 35,),
           onPressed: () {
-            // showAlertDialog(context);
-            showSuccessFullAlertDialog(context);
+            showAddProductDialog(context);
         },),
       );
     },);

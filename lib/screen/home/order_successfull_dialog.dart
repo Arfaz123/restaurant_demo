@@ -24,6 +24,7 @@ showSuccessFullAlertDialog(BuildContext context) {
               style: TextStyle(fontSize: 12,fontWeight: FontWeight.w400),)),
             size.heightSpace(30),
             AppButton(buttonText: "Excellent", onPressed: () {
+              Get.back();
             },),
             size.heightSpace(16),
           ],
