@@ -14,6 +14,7 @@ dependencies:
 
   get: ^4.6.6
   dynamicutils: ^1.0.1
+  firebase_core: ^2.25.4
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

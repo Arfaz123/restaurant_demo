@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:restaurant_demo_app/config/root_binding/root_binding.dart';
 import 'package:restaurant_demo_app/screen/home/home_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:restaurant_demo_app/screen/main_Screen/main_screen.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -16,13 +28,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Restaurant APP',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: false,
-        fontFamily: "Inter"
-      ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: false,
+          fontFamily: "Inter"),
       debugShowCheckedModeBanner: false,
       initialBinding: RootBinding(),
-      home: const HomeScreen(),
+      home: const MainScreen(),
     );
   }
 }
