@@ -50,7 +50,28 @@ showAddNewOptionDialog(BuildContext context) {
           )),
       TextButton(
           onPressed: () {
-            Get.find<HomeController>().addProductAtIndex();
+            if (Get.find<HomeController>().optionNameController.text.isEmpty) {
+              Get.showSnackbar(const GetSnackBar(
+                  message: "Please insert name",
+                  margin: EdgeInsets.all(16),
+                  borderRadius: 10,
+                  dismissDirection: DismissDirection.startToEnd,
+                  isDismissible: true,
+                  duration: Duration(seconds: 1)));
+            } else if (Get.find<HomeController>()
+                .priceOptionController
+                .text
+                .isEmpty) {
+              Get.showSnackbar(const GetSnackBar(
+                  message: "Please insert price",
+                  margin: EdgeInsets.all(16),
+                  borderRadius: 10,
+                  dismissDirection: DismissDirection.startToEnd,
+                  isDismissible: true,
+                  duration: Duration(seconds: 1)));
+            } else {
+              Get.find<HomeController>().addProductAtIndex();
+            }
           },
           child: const Text(
             "Save",

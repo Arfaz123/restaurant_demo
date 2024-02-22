@@ -19,89 +19,111 @@ showOptionDialog(BuildContext context) {
             mainAxisSize: MainAxisSize.min,
             children: [
               size.heightSpace(15),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: controller.categoryList.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Text(
-                        controller.categoryList[index].title ?? "",
-                        style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w600),
-                      ),
-                      size.heightSpace(9),
-                      controller.categoryList[index].productData == null
-                          ? const SizedBox()
-                          : SizedBox(
-                              height: size.height(100),
-                              width: size.width(300),
-                              child: ListView.separated(
-                                separatorBuilder: (context, index) {
-                                  return Container(
-                                    color: const Color(0xFF52525242),
-                                    height: 1,
-                                  );
-                                },
-                                shrinkWrap: true,
-                                itemCount: controller.categoryList[index]
-                                        .productData?.length ??
-                                    0,
-                                itemBuilder: (context, index1) {
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            controller
-                                                    .categoryList[index]
-                                                    .productData?[index1]
-                                                    .productName ??
-                                                "",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          size.heightSpace(3),
-                                          Text(
-                                            controller
-                                                    .categoryList[index]
-                                                    .productData?[index1]
-                                                    .price ??
-                                                "",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
+              controller.categoryList!.isEmpty
+                  ? const SizedBox()
+                  : SizedBox(
+                      height: size.height(400),
+                      width: size.width(300),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        // physics: const NeverScrollableScrollPhysics(),
+                        itemCount: controller.categoryList?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          print("category: ${controller.categoryList}");
+                          return SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Text(
+                                  controller.categoryList?[index].newCategory ??
+                                      "",
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                size.heightSpace(9),
+                                controller.categoryList?[index].options == null
+                                    ? const SizedBox()
+                                    : SizedBox(
+                                        height: size.height(100),
+                                        width: size.width(300),
+                                        child: ListView.separated(
+                                          separatorBuilder: (context, index) {
+                                            return Container(
+                                              color: const Color(0xFF52525242),
+                                              height: 1,
+                                            );
+                                          },
+                                          shrinkWrap: true,
+                                          itemCount: controller
+                                                  .categoryList?[index]
+                                                  .options
+                                                  ?.length ??
+                                              0,
+                                          itemBuilder: (context, index1) {
+                                            return Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      controller
+                                                              .categoryList?[
+                                                                  index]
+                                                              .options?[index1]
+                                                              .optionName ??
+                                                          "",
+                                                      style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                    size.heightSpace(3),
+                                                    Text(
+                                                      controller
+                                                              .categoryList?[
+                                                                  index]
+                                                              .options?[index1]
+                                                              .optionPrice ??
+                                                          "",
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ],
+                                                ),
+                                                IconButton(
+                                                    onPressed: () {},
+                                                    icon: const Icon(
+                                                        Icons.delete_outline))
+                                              ],
+                                            );
+                                          },
+                                        ),
                                       ),
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon:
-                                              const Icon(Icons.delete_outline))
-                                    ],
-                                  );
-                                },
-                              ),
+                                AppButton(
+                                  buttonText: "New Option",
+                                  onPressed: () {
+                                    controller.optionNameController.clear();
+                                    controller.priceOptionController.clear();
+
+                                    controller.productIndex = index;
+                                    controller.update();
+                                    showAddNewOptionDialog(context);
+                                  },
+                                ),
+                              ],
                             ),
-                      AppButton(
-                        buttonText: "New Option",
-                        onPressed: () {
-                          controller.productIndex = index;
-                          controller.update();
-                          showAddNewOptionDialog(context);
+                          );
                         },
                       ),
-                    ],
-                  );
-                },
-              ),
+                    ),
 
               // size.heightSpace(15),
               // const Text(
@@ -158,6 +180,8 @@ showOptionDialog(BuildContext context) {
               AppButton(
                 buttonText: "New Category",
                 onPressed: () {
+                  controller.newCategoryController.clear();
+                  controller.update();
                   showAddCatDialog(context);
                 },
               ),
@@ -179,7 +203,10 @@ showOptionDialog(BuildContext context) {
                 color: AppColor.blackColor),
           )),
       TextButton(
-          onPressed: () {},
+          onPressed: () {
+            print("on presss");
+            Get.find<HomeController>().addPFullProductToFireStore();
+          },
           child: const Text(
             "Save",
             style: TextStyle(
