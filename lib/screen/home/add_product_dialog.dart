@@ -23,47 +23,53 @@ showAddProductDialog(BuildContext context) {
                 "Images",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
-              SizedBox(
-                height: size.height(150),
-                width: size.height(300),
-                child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Stack(
-                        children: [
-                          Image.asset("assets/images/ic_chicken.png"),
-                          Positioned(
-                            bottom: 15,
-                            right: 10,
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    color: AppColor.whiteColor,
-                                    borderRadius: BorderRadius.circular(100),
-                                    boxShadow: [
-                                      const BoxShadow(
-                                          offset: Offset(0, 4),
-                                          blurRadius: 4,
-                                          color: Color(0xFF00000040))
-                                    ]),
-                                child: const Icon(
-                                  Icons.delete_outline,
-                                  color: AppColor.blackColor,
+              size.heightSpace(15),
+              controller.path == null || controller.path!.isEmpty
+                  ? const SizedBox()
+                  : SizedBox(
+                      height: size.height(150),
+                      width: size.height(300),
+                      child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return Stack(
+                              children: [
+                                Image.file(controller.path![index]!),
+                                Positioned(
+                                  bottom: 15,
+                                  right: 10,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      controller.path!.removeAt(index);
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                          color: AppColor.whiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          boxShadow: [
+                                            const BoxShadow(
+                                                offset: Offset(0, 4),
+                                                blurRadius: 4,
+                                                color: Color(0xFF00000040))
+                                          ]),
+                                      child: const Icon(
+                                        Icons.delete_outline,
+                                        color: AppColor.blackColor,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return size.widthSpace(22);
-                    },
-                    itemCount: 10),
-              ),
+                              ],
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return size.widthSpace(22);
+                          },
+                          itemCount: controller.path?.length ?? 0),
+                    ),
               size.heightSpace(16),
               AppButton(
                 buttonText: "Select Images",
@@ -171,7 +177,42 @@ showAddProductDialog(BuildContext context) {
           )),
       TextButton(
           onPressed: () {
-            Get.find<HomeController>().addProductToFireStore();
+            if (Get.find<HomeController>().nameController.text.isEmpty) {
+              Get.showSnackbar(const GetSnackBar(
+                message: "Please insert name",
+                margin: EdgeInsets.all(16),
+                borderRadius: 10,
+                dismissDirection: DismissDirection.startToEnd,
+                isDismissible: true,
+                duration: Duration(seconds: 1),
+              ));
+            } else if (Get.find<HomeController>()
+                .descriptionController
+                .text
+                .isEmpty) {
+              Get.showSnackbar(const GetSnackBar(
+                message: "Please insert description",
+                margin: EdgeInsets.all(16),
+                borderRadius: 10,
+                dismissDirection: DismissDirection.startToEnd,
+                isDismissible: true,
+                duration: Duration(seconds: 1),
+              ));
+            } else if (Get.find<HomeController>()
+                .priceController
+                .text
+                .isEmpty) {
+              Get.showSnackbar(const GetSnackBar(
+                message: "Please insert price",
+                margin: EdgeInsets.all(16),
+                borderRadius: 10,
+                dismissDirection: DismissDirection.startToEnd,
+                isDismissible: true,
+                duration: Duration(seconds: 1),
+              ));
+            } else {
+              Get.find<HomeController>().addProductToFireStore();
+            }
           },
           child: const Text(
             "Save",

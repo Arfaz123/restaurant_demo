@@ -44,14 +44,21 @@ showAddCatDialog(BuildContext context) {
           )),
       TextButton(
           onPressed: () {
-            Get.find<HomeController>().categoryList.add(CategoryData(
-                title: Get.find<HomeController>()
-                    .newCategoryController
-                    .text
-                    .trim()));
-            Get.find<HomeController>().update();
-            print("list length::${Get.find<HomeController>().categoryList}");
-            Get.back();
+            if (Get.find<HomeController>()
+                .newCategoryController
+                .text
+                .isNotEmpty) {
+              Get.find<HomeController>().categoryList?.add(NewOption(
+                  newCategory: Get.find<HomeController>()
+                      .newCategoryController
+                      .text
+                      .trim()));
+              Get.find<HomeController>().newCategoryController.clear();
+              Get.find<HomeController>().update();
+
+              print("list length::${Get.find<HomeController>().categoryList}");
+              Get.back();
+            }
           },
           child: const Text(
             "Save",
