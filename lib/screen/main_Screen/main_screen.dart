@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:restaurant_demo_app/controller/home_controller.dart';
@@ -25,7 +26,7 @@ class MainScreen extends StatelessWidget {
                       onPressed: () {
                         Get.find<HomeController>().isAdmin = true;
                         Get.find<HomeController>().update();
-                        controller.fetchHomeData();
+                        controller.productList = FirebaseFirestore.instance.collection('productList').get();
                         controller.update();
                         Get.to(() => const HomeScreen());
                       },
@@ -37,7 +38,7 @@ class MainScreen extends StatelessWidget {
                       onPressed: () {
                         Get.find<HomeController>().isAdmin = false;
                         Get.find<HomeController>().update();
-                        controller.fetchHomeData();
+                        controller.productList = FirebaseFirestore.instance.collection('productList').get();
                         controller.update();
                         Get.to(() => const HomeScreen());
                       },

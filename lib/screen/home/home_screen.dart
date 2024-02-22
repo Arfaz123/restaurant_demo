@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:restaurant_demo_app/constant/app_color.dart';
@@ -90,41 +91,51 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                   size.heightSpace(22),
-                  ListView.separated(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                    Map<String, dynamic> data = controller.documents[index].data() as Map<String, dynamic>;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          data['title'] ?? "",
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                        size.heightSpace(11),
-                        SizedBox(
-                          height: size.height(240),
-                          child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index1) {
-                                Map<String, dynamic> data = controller.documents[index1].data() as Map<String, dynamic>;
-                                return HomeScreenWidget(
-                                    image: data['productData'][index]['images'][index1] ?? "",
-                                    name: data['productName'] ?? "",
-                                    price: "\$${data['price'] ?? ""}");
-                              },
-                              separatorBuilder: (context, index) {
-                                return size.widthSpace(22);
-                              },
-                              itemCount: controller.documents.length),
-                        ),
-                      ],
-                    );
-                  }, separatorBuilder: (context, index) {
-                    return size.heightSpace(22);
-                  }, itemCount: 1)
+                  FutureBuilder(future: controller.productList, builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final List<DocumentSnapshot> documents =
+                          snapshot.data?.docs ?? [];
+                      return ListView.separated(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            print("DATA===>$documents");
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  documents[index]['title'] ?? "",
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                                ),
+                                size.heightSpace(11),
+                                SizedBox(
+                                  height: size.height(240),
+                                  child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index1) {
+                                        // Map<String, dynamic> data1 = controller.documents[index1].data() as Map<String, dynamic>;
+                                        return HomeScreenWidget(
+                                            image: documents[index]['productData'][index1]['images'][0] ?? "",
+                                            name: documents[index]['productData'][index1]['productName'] ?? "",
+                                            price: "\$${documents[index]['productData'][index1]['price'] ?? ""}"
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return size.widthSpace(22);
+                                      },
+                                      itemCount: documents[index]['productData'].length ?? 0),
+                                ),
+                              ],
+                            );
+                          }, separatorBuilder: (context, index) {
+                        return size.heightSpace(22);
+                      }, itemCount: documents.length ?? 0);
+                    }else{
+                      return Text("sd");
+                    }
+                    
+                  },)
                 ],
               ),
             ),

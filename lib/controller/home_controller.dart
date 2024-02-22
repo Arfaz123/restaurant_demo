@@ -175,17 +175,18 @@ class HomeController extends GetxController {
     Get.back();
   }
 
-  List<DocumentSnapshot> documents = [];
-  Future<void> fetchHomeData() async {
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('productList').get();
-        documents = querySnapshot.docs;
-        print("DOCUMENTS--->$documents");
-        print("DOCUMENTS--->${documents[0].data()}");
-    } catch (e) {
-      print("Error fetching data: $e");
-    }
-  }
+  Future<QuerySnapshot> productList = FirebaseFirestore.instance.collection('productList').get();
+  // List<DocumentSnapshot> documents = [];
+  // Future<void> fetchHomeData() async {
+  //   try {
+  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('productList').get();
+  //       documents = querySnapshot.docs;
+  //       print("DOCUMENTS--->$documents");
+  //       print("DOCUMENTS--->${documents[1].data()}");
+  //   } catch (e) {
+  //     print("Error fetching data: $e");
+  //   }
+  // }
 }
 
 class CategoryData {
