@@ -99,7 +99,13 @@ showOptionDialog(BuildContext context) {
                                                   ],
                                                 ),
                                                 IconButton(
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      controller
+                                                          .categoryList?[index]
+                                                          .options
+                                                          ?.removeAt(index);
+                                                      controller.update();
+                                                    },
                                                     icon: const Icon(
                                                         Icons.delete_outline))
                                               ],

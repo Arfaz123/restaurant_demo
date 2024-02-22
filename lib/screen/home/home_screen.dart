@@ -91,60 +91,91 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                   size.heightSpace(22),
-                  FutureBuilder(future: controller.productList, builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final List<DocumentSnapshot> documents =
-                          snapshot.data?.docs ?? [];
-                      print("${documents[0].id}");
-                      return ListView.separated(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  documents[index]['title'] ?? "",
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                                ),
-                                size.heightSpace(11),
-                                SizedBox(
-                                  height: size.height(240),
-                                  child: ListView.separated(
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index1) {
-                                        // Map<String, dynamic> data1 = controller.documents[index1].data() as Map<String, dynamic>;
-                                        return HomeScreenWidget(
-                                            image: documents[index]['productData'][index1]['images'][0] ?? "",
-                                            name: documents[index]['productData'][index1]['productName'] ?? "",
-                                            price: "\$${documents[index]['productData'][index1]['price'] ?? ""}",
-                                          deleteOnTap: () {
-                                            FirebaseFirestore.instance.collection('productList').doc(documents[index].id.toString()).delete().then((_) {
-                                              print("Document deleted successfully");
-                                              controller.productList = FirebaseFirestore.instance.collection('productList').get();
+                  FutureBuilder(
+                    future: controller.productList,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final List<DocumentSnapshot> documents =
+                            snapshot.data?.docs ?? [];
+                        // print("${documents[0].id}");
+                        return ListView.separated(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    documents[index]['title'] ?? "",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  size.heightSpace(11),
+                                  SizedBox(
+                                    height: size.height(240),
+                                    child: ListView.separated(
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index1) {
+                                          // Map<String, dynamic> data1 = controller.documents[index1].data() as Map<String, dynamic>;
+                                          return HomeScreenWidget(
+                                            image: documents[index]
+                                                        ['productData'][index1]
+                                                    ['images'][0] ??
+                                                "",
+                                            name: documents[index]
+                                                        ['productData'][index1]
+                                                    ['productName'] ??
+                                                "",
+                                            price:
+                                                "\$${documents[index]['productData'][index1]['price'] ?? ""}",
+                                            deleteOnTap: () {
+                                              FirebaseFirestore.instance
+                                                  .collection('productList')
+                                                  .doc(documents[index]
+                                                      .id
+                                                      .toString())
+                                                  .delete()
+                                                  .then((_) {
+                                                print(
+                                                    "Document deleted successfully");
+                                                controller.productList =
+                                                    FirebaseFirestore.instance
+                                                        .collection(
+                                                            'productList')
+                                                        .get();
+                                                controller.update();
+                                              }).catchError((error) {
+                                                print("Error: $error");
+                                              });
+                                            },
+                                            addOnTap: () {
+                                              controller.cartList = documents;
                                               controller.update();
-                                            }).catchError((error) {
-                                              print("Error: $error");
-                                            });
-                                          },
-                                        );
-                                      },
-                                      separatorBuilder: (context, index) {
-                                        return size.widthSpace(22);
-                                      },
-                                      itemCount: documents[index]['productData'].length ?? 0),
-                                ),
-                              ],
-                            );
-                          }, separatorBuilder: (context, index) {
-                        return size.heightSpace(22);
-                      }, itemCount: documents.length ?? 0);
-                    }else{
-                      return Text("sd");
-                    }
-                    
-                  },)
+                                            },
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return size.widthSpace(22);
+                                        },
+                                        itemCount: documents[index]
+                                                    ['productData']
+                                                .length ??
+                                            0),
+                                  ),
+                                ],
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return size.heightSpace(22);
+                            },
+                            itemCount: documents.length ?? 0);
+                      } else {
+                        return Text("sd");
+                      }
+                    },
+                  )
                 ],
               ),
             ),

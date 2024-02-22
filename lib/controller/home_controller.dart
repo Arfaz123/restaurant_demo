@@ -21,6 +21,9 @@ class HomeController extends GetxController {
   int productIndex = 0;
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
   FirebaseStorage storage = FirebaseStorage.instance;
+  List<DocumentSnapshot<Object?>> cartList = [];
+  Future<QuerySnapshot> productList =
+      FirebaseFirestore.instance.collection('productList').get();
 
   var dropDownItems = [
     'Sandwish',
@@ -94,6 +97,7 @@ class HomeController extends GetxController {
         Product(
           images: downloadUrl,
           productName: nameController.text.trim(),
+          description: descriptionController.text.trim(),
           price: priceController.text.trim(),
         ),
         // Add more products as needed
@@ -133,6 +137,7 @@ class HomeController extends GetxController {
           Product(
             images: downloadUrl,
             productName: nameController.text.trim(),
+            description: descriptionController.text.trim(),
             price: priceController.text.trim(),
           ),
           // Add more products as needed
@@ -163,6 +168,7 @@ class HomeController extends GetxController {
     final newProduct = Options(
       optionName: optionNameController.text.trim(),
       optionPrice: priceOptionController.text.trim(),
+      isSelected: false,
     );
     final category = Get.find<HomeController>().categoryList?[productIndex];
     category?.options ??= [];
@@ -175,18 +181,18 @@ class HomeController extends GetxController {
     Get.back();
   }
 
-  Future<QuerySnapshot> productList = FirebaseFirestore.instance.collection('productList').get();
-  // List<DocumentSnapshot> documents = [];
-  // Future<void> fetchHomeData() async {
-  //   try {
-  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('productList').get();
-  //       documents = querySnapshot.docs;
-  //       print("DOCUMENTS--->$documents");
-  //       print("DOCUMENTS--->${documents[1].data()}");
-  //   } catch (e) {
-  //     print("Error fetching data: $e");
-  //   }
-  // }
+  List<DocumentSnapshot> documents = [];
+  Future<void> fetchHomeData() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('productList').get();
+      documents = querySnapshot.docs;
+      print("DOCUMENTS--->$documents");
+      print("DOCUMENTS--->${documents[0].data()}");
+    } catch (e) {
+      print("Error fetching data: $e");
+    }
+  }
 }
 
 class CategoryData {
@@ -218,9 +224,11 @@ class CategoryData {
 class Product {
   final String? productName;
   final String? price;
+  final String? description;
   final List<String>? images;
 
-  Product({this.price = "", this.productName = "", this.images});
+  Product(
+      {this.price = "", this.productName = "", this.images, this.description});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     List<String>? imagesList = [];
@@ -231,6 +239,7 @@ class Product {
     return Product(
       productName: json["productName"],
       price: json["price"],
+      description: json["description"],
       images: imagesList,
     );
   }
@@ -239,6 +248,7 @@ class Product {
     return {
       "price": price,
       "productName": productName,
+      "description": description,
       "images": images,
     };
   }
@@ -269,14 +279,20 @@ class NewOption {
 class Options {
   final String? optionName;
   final String? optionPrice;
+  bool isSelected;
 
-  Options({this.optionName, this.optionPrice});
+  Options({this.optionName, this.optionPrice, this.isSelected = false});
 
   Options.fromJson(Map<String, dynamic> json)
       : optionName = json["optionName"],
-        optionPrice = json["optionPrice"];
+        optionPrice = json["optionPrice"],
+        isSelected = json["isSelected"] ?? false;
 
   Map<String, dynamic> toJson() {
-    return {"optionName": optionName, "optionPrice": optionPrice};
+    return {
+      "optionName": optionName,
+      "optionPrice": optionPrice,
+      "isSelected": isSelected
+    };
   }
 }
