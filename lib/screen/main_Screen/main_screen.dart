@@ -25,6 +25,8 @@ class MainScreen extends StatelessWidget {
                       onPressed: () {
                         Get.find<HomeController>().isAdmin = true;
                         Get.find<HomeController>().update();
+                        controller.fetchHomeData();
+                        controller.update();
                         Get.to(() => const HomeScreen());
                       },
                       child: const Text("Admin Flow")),
@@ -35,6 +37,8 @@ class MainScreen extends StatelessWidget {
                       onPressed: () {
                         Get.find<HomeController>().isAdmin = false;
                         Get.find<HomeController>().update();
+                        controller.fetchHomeData();
+                        controller.update();
                         Get.to(() => const HomeScreen());
                       },
                       child: const Text("Client Flow")),
