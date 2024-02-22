@@ -33,11 +33,14 @@ class HomeScreenWidget extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Image.asset(
-                image,
-                height: size.height(143),
-                width: size.width(158),
-                fit: BoxFit.fill,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  image,
+                  height: size.height(143),
+                  width: size.width(158),
+                  fit: BoxFit.cover,
+                ),
               ),
               Positioned(
                 bottom: 10,

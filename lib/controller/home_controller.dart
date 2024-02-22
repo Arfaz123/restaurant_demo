@@ -174,6 +174,18 @@ class HomeController extends GetxController {
     //     "list length::${Get.find<HomeController>().categoryList[productIndex].newCategory}");
     Get.back();
   }
+
+  List<DocumentSnapshot> documents = [];
+  Future<void> fetchHomeData() async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('productList').get();
+        documents = querySnapshot.docs;
+        print("DOCUMENTS--->$documents");
+        print("DOCUMENTS--->${documents[0].data()}");
+    } catch (e) {
+      print("Error fetching data: $e");
+    }
+  }
 }
 
 class CategoryData {

@@ -90,71 +90,41 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                   size.heightSpace(22),
-                  const Text(
-                    "Salads",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                  ),
-                  size.heightSpace(11),
-                  SizedBox(
-                    height: size.height(200),
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return const HomeScreenWidget(
-                              image: "assets/images/ic_chicken.png",
-                              name: "Chicken Salad",
-                              price: "\$7.00");
-                        },
-                        separatorBuilder: (context, index) {
-                          return size.widthSpace(22);
-                        },
-                        itemCount: 5),
-                  ),
-                  size.heightSpace(31),
-                  const Text(
-                    "Salads",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                  ),
-                  size.heightSpace(11),
-                  SizedBox(
-                    height: size.height(200),
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return const HomeScreenWidget(
-                              image: "assets/images/ic_chicken.png",
-                              name: "Chicken Salad",
-                              price: "\$7.00");
-                        },
-                        separatorBuilder: (context, index) {
-                          return size.widthSpace(22);
-                        },
-                        itemCount: 5),
-                  ),
-                  size.heightSpace(31),
-                  const Text(
-                    "Salads",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                  ),
-                  size.heightSpace(11),
-                  SizedBox(
-                    height: size.height(200),
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return const HomeScreenWidget(
-                              image: "assets/images/ic_chicken.png",
-                              name: "Chicken Salad",
-                              price: "\$7.00");
-                        },
-                        separatorBuilder: (context, index) {
-                          return size.widthSpace(22);
-                        },
-                        itemCount: 5),
-                  )
+                  ListView.separated(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                    Map<String, dynamic> data = controller.documents[index].data() as Map<String, dynamic>;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data['title'] ?? "",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        size.heightSpace(11),
+                        SizedBox(
+                          height: size.height(240),
+                          child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index1) {
+                                Map<String, dynamic> data = controller.documents[index1].data() as Map<String, dynamic>;
+                                return HomeScreenWidget(
+                                    image: data['productData'][index]['images'][index1] ?? "",
+                                    name: data['productName'] ?? "",
+                                    price: "\$${data['price'] ?? ""}");
+                              },
+                              separatorBuilder: (context, index) {
+                                return size.widthSpace(22);
+                              },
+                              itemCount: controller.documents.length),
+                        ),
+                      ],
+                    );
+                  }, separatorBuilder: (context, index) {
+                    return size.heightSpace(22);
+                  }, itemCount: 1)
                 ],
               ),
             ),
