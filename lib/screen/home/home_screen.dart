@@ -95,11 +95,11 @@ class HomeScreen extends StatelessWidget {
                     if (snapshot.hasData) {
                       final List<DocumentSnapshot> documents =
                           snapshot.data?.docs ?? [];
+                      print("${documents[0].id}");
                       return ListView.separated(
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            print("DATA===>$documents");
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -118,7 +118,16 @@ class HomeScreen extends StatelessWidget {
                                         return HomeScreenWidget(
                                             image: documents[index]['productData'][index1]['images'][0] ?? "",
                                             name: documents[index]['productData'][index1]['productName'] ?? "",
-                                            price: "\$${documents[index]['productData'][index1]['price'] ?? ""}"
+                                            price: "\$${documents[index]['productData'][index1]['price'] ?? ""}",
+                                          deleteOnTap: () {
+                                            FirebaseFirestore.instance.collection('productList').doc(documents[index].id.toString()).delete().then((_) {
+                                              print("Document deleted successfully");
+                                              controller.productList = FirebaseFirestore.instance.collection('productList').get();
+                                              controller.update();
+                                            }).catchError((error) {
+                                              print("Error: $error");
+                                            });
+                                          },
                                         );
                                       },
                                       separatorBuilder: (context, index) {
