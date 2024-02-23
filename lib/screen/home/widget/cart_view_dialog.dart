@@ -19,114 +19,139 @@ showCartViewDialog(BuildContext context) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    size.heightSpace(15),
-                    Text(
-                      controller.cartList[0]["title"].toString(),
-                      style: const TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.w600),
-                    ),
-                    size.heightSpace(3),
-                    Center(
-                      child: Image.network(
-                        controller.cartList[0]["productData"][0]["images"][0]
-                            .toString(),
-                        height: size.height(180),
-                        width: size.width(180),
-                      ),
-                    ),
-                    size.heightSpace(9),
-                    Text(
-                      "description",
-                      // controller.cartList[0]["description"] ?? "",
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                    ),
-                    size.heightSpace(40),
-                    ListView.builder(
-                      itemCount: controller.cartList[0]["newOption"].length,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
+                    SizedBox(
+                      height: size.height(500),
+                      width: size.width(300),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: controller.cartList.length ?? 0,
+                        itemBuilder: (context, index1) {
                         return Column(
                           children: [
+                            size.heightSpace(15),
                             Text(
-                              controller.cartList[0]["newOption"][index]
-                                      ["newCategory"] ??
-                                  "",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                              controller.cartList[index1]["title"].toString(),
+                              style: const TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                            size.heightSpace(10),
+                            Center(
+                              child: Image.network(
+                                controller.cartList[index1]["productData"][0]["images"][0]
+                                    .toString(),
+                                height: size.height(100),
+                                width: size.width(180),
+                              ),
                             ),
                             size.heightSpace(9),
+                            Text(
+                              controller.cartList[index1]["productData"][0]["description"] ?? "",
+                              style:
+                              TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                            ),
+                            size.heightSpace(40),
                             SizedBox(
-                              height: size.height(100),
+                              height: size.height(80),
                               width: size.width(300),
-                              child: ListView.separated(
-                                physics: NeverScrollableScrollPhysics(),
-                                separatorBuilder: (context, index1) {
-                                  return Container(
-                                    color: const Color(0xFF52525242),
-                                    height: 1,
-                                  );
-                                },
+                              child: ListView.builder(
+                                itemCount: controller.cartList[index1]["newOption"].length ?? 0,
                                 shrinkWrap: true,
-                                itemCount: controller
-                                    .cartList[0]["newOption"][index]["options"]
-                                    .length,
-                                itemBuilder: (context, index1) {
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index2) {
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            controller.cartList[0]["newOption"]
-                                                        [index]["options"]
-                                                    [index1]["optionName"] ??
-                                                "",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          size.heightSpace(3),
-                                          Text(
-                                            controller.cartList[0]["newOption"]
-                                                        [index]["options"]
-                                                    [index1]["optionPrice"] ??
-                                                "",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
+                                      Text(
+                                        controller.cartList[index1]["newOption"][index2]
+                                        ["newCategory"] ??
+                                            "",
+                                        style: TextStyle(
+                                            fontSize: 15, fontWeight: FontWeight.bold),
                                       ),
-                                      Checkbox(
-                                        tristate: true,
-                                        activeColor: AppColor.blackColor,
-                                        value: controller.cartList[0]
-                                                ["newOption"][index]["options"]
-                                            [index1]["isSelected"],
-                                        onChanged: (value) {
-                                          controller.cartList[0]["newOption"]
-                                                  [index]["options"][index1]
-                                              ["isSelected"] = value!;
-                                          controller.update();
-                                        },
-                                      )
+                                      size.heightSpace(9),
+                                      SizedBox(
+                                        height: size.height(100),
+                                        width: size.width(300),
+                                        child: ListView.separated(
+                                          physics: NeverScrollableScrollPhysics(),
+                                          separatorBuilder: (context, index) {
+                                            return Container(
+                                              color: const Color(0xFF52525242),
+                                              height: 1,
+                                            );
+                                          },
+                                          shrinkWrap: true,
+                                          itemCount: controller
+                                              .cartList[index1]["newOption"][index2]["options"]
+                                              .length ?? 0,
+                                          itemBuilder: (context, index3) {
+                                            print("BOOL value==>${controller.cartList[index1]
+                                            ["newOption"][index2]["options"]
+                                            [index3]["isSelected"]}");
+                                            return Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      controller.cartList[index1]["newOption"]
+                                                      [index2]["options"]
+                                                      [index3]["optionName"] ??
+                                                          "",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w400),
+                                                    ),
+                                                    size.heightSpace(3),
+                                                    Text(
+                                                      controller.cartList[index1]["newOption"]
+                                                      [index2]["options"]
+                                                      [index3]["optionPrice"] ??
+                                                          "",
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.w400),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Checkbox(
+                                                  tristate: true,
+                                                  activeColor: AppColor.blackColor,
+                                                  value: controller.cartList[index1]
+                                                  ["newOption"][index2]["options"]
+                                                  [index3]["isSelected"],
+                                                  onChanged: (value) {
+                                                    controller.cartList[index1]["newOption"]
+                                                    [index2]["options"][index3]
+                                                    ["isSelected"] = value!;
+                                                    print("value===>$value");
+                                                    controller.update();
+                                                    print("value12===>${controller.cartList[index1]["newOption"]
+                                                    [index2]["options"][index3]
+                                                    ["isSelected"]}");
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      size.heightSpace(15),
                                     ],
                                   );
                                 },
                               ),
                             ),
-                            size.heightSpace(15),
                           ],
                         );
-                      },
+                      },),
                     ),
+
 
                     // const Text(
                     //   "Choose your drink",
