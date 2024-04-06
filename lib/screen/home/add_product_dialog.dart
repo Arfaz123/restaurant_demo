@@ -141,6 +141,7 @@ showAddProductDialog(BuildContext context) {
               SizedBox(
                   height: size.height(45),
                   child: AppTextField(
+                    keyboardType: TextInputType.number,
                     controller: controller.priceController,
                     hintText: "Price",
                   )),

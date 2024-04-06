@@ -146,6 +146,7 @@ class HomeController extends GetxController {
           return NewOption(options: e.options, newCategory: e.newCategory);
         }).toList());
 
+
     await fireStore.collection('productList').add({
       "title": categoryData.title,
       "productData":
@@ -160,6 +161,8 @@ class HomeController extends GetxController {
     descriptionController.clear();
     priceController.clear();
     categoryList?.clear();
+    productList =
+        FirebaseFirestore.instance.collection('productList').get();
     update();
   }
 
